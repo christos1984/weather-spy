@@ -1,0 +1,2 @@
+php_value memory_limit 256MB
+php_value date.timezone 'Europe/Prague'

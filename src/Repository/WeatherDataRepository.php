@@ -67,4 +67,30 @@ class WeatherDataRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getWeatherData($city, $from, $to)
+    {
+        return $this->createQueryBuilder('w')
+            ->andWhere('w.city = :city')
+            ->andWhere('w.timeUpdated >= :from')
+            ->andWhere('w.timeUpdated <= :to')
+            ->setParameter('city', $city)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getDailyData($city, $date)
+    {
+        return $this->createQueryBuilder('w')
+            ->select('w.temperature as temp, HOUR(w.timeUpdated) as time, DATE(w.timeUpdated) as date')
+            ->andWhere('w.city = :city')
+            ->andWhere('date = :from')
+            ->setParameter('city', $city)
+            ->setParameter('from', $date)
+            ->groupBy('time')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -19,21 +19,26 @@ class HomeController extends AbstractController
         $favouriteCities = $this->getDoctrine()
         ->getRepository(FavouriteCity::class)
         ->findAll();
-
-        foreach ($favouriteCities as $favCity)
-        {
-            $temp[] = $this->getDoctrine()
+        if (!empty($favouriteCities)) {
+            foreach ($favouriteCities as $favCity) {
+                $temp[] = $this->getDoctrine()
             ->getRepository(WeatherData::class)
             ->findLatest($favCity->getId());
+            }
         }
+        else $temp = [];
 
         $lastUpdate = $this->getDoctrine()
                             ->getRepository(WeatherData::class)
                             ->findLastUpdateTime();
+        if ($lastUpdate === null) {
+            $lastUpdate = '';
+        }
 
+        else $lastUpdate = $lastUpdate->getTimeUpdated();
         return $this->render('home/index.html.twig', [
                 'numbers' => $temp,
-                'lastUpdate' => $lastUpdate->getTimeUpdated(),
+                'lastUpdate' => $lastUpdate ,
             ]);
     }
 }

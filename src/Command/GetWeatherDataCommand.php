@@ -49,7 +49,7 @@ class GetWeatherDataCommand extends Command
             ->findAll();
             //var_dump($product);die;
             $this->spy->fetchDataFromUpstream($product);
-            sleep(600);
+            sleep(60);
         }
     }
 }

@@ -1,4 +1,10 @@
 {
+    "beberlei/doctrineextensions": {
+        "version": "v1.2.3"
+    },
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -106,6 +112,9 @@
             "config/routes/easy_admin.yaml"
         ]
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.37"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -142,8 +151,20 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        },
+        "files": [
+            "config/packages/stof_doctrine_extensions.yaml"
+        ]
+    },
     "symfony/asset": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/browser-kit": {
         "version": "v4.3.4"
@@ -195,7 +216,7 @@
         "version": "v1.1.5"
     },
     "symfony/expression-language": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/filesystem": {
         "version": "v4.3.3"
@@ -216,7 +237,7 @@
         ]
     },
     "symfony/form": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/framework-bundle": {
         "version": "4.2",
@@ -250,10 +271,10 @@
         "version": "v4.3.3"
     },
     "symfony/inflector": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/intl": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
@@ -268,7 +289,7 @@
         "version": "v4.3.3"
     },
     "symfony/options-resolver": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",
@@ -308,7 +329,7 @@
         "version": "v1.0.4"
     },
     "symfony/property-access": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -338,16 +359,16 @@
         ]
     },
     "symfony/security-core": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/security-csrf": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/security-guard": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/security-http": {
-        "version": "v4.3.3"
+        "version": "v4.3.4"
     },
     "symfony/service-contracts": {
         "version": "v1.1.5"

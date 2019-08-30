@@ -20,6 +20,9 @@ class WeatherSpy
 
     public function fetchDataFromUpstream(Array $cities): Array
     {
+        if (empty($cities)){
+            echo 'WARNING: No cities found';
+        }
 
         foreach ($cities as $city)
         {
