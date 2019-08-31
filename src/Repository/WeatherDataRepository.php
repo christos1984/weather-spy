@@ -73,7 +73,7 @@ class WeatherDataRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('w')
             ->andWhere('w.city = :city')
             ->andWhere('w.timeUpdated >= :from')
-            ->andWhere('w.timeUpdated <= :to')
+            ->andWhere('w.timeUpdated < :to')
             ->setParameter('city', $city)
             ->setParameter('from', $from)
             ->setParameter('to', $to)

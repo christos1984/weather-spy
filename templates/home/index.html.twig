@@ -5,15 +5,17 @@
 {% include('navbar.html.twig') with {'lastUpdate':lastUpdate} %}
 
 <div class="container">
+<h1 class="text-center">Today's weather for favourite cities</h1>
     <div class="row">
     {% for number in numbers %}
+		{% if number.city is defined %}
 		<div class="col-sm-4">
 			<div id="card" class="weater">
 				<div class="city-selected">
 					<article>
 					    <div class="info">
-							<div class="city"><span>City:</span> {{number.city.name}}, {{number.city.countryCode}}</div>
-							<div class="night">Last update - {{number.timeUpdated| date('H:i:s')}}</div>
+							<div class="city"> {{number.city.name}}, {{number.city.countryCode}}</div>
+							<div class="night"><p> {{number.weatherDescription}} </p></div>
 							<div class="temp">{{number.temperature| round(1, 'floor')}}°</div>
 
 								<div class="wind">
@@ -50,7 +52,7 @@
 										</g>
 									</g>
 
-									<span>{{number.windspeed}} Bft</span>
+									<span>{{number.windspeed}} meter/sec</span>
 								</div>
 							</div>
 
@@ -58,7 +60,7 @@
 								<img src='http://openweathermap.org/img/wn/{{number.icon}}@2x.png'/>
 							</div>
                             <div class="description">
-                                <p> {{number.weatherDescription}} </p>
+								<p> Last update - {{number.timeUpdated| date('H:i:s')}} </p>
                             </div>
 						</article>
 
@@ -81,6 +83,7 @@
 					</div>
 				</div>
 			</div>
+			{% endif %}
 {% endfor %}
 		</div>
 		</div>
@@ -88,6 +91,6 @@
 
 	</div>
 
-
+{% include('footer.html.twig') with {'lastUpdate':lastUpdate} %}
 
             {%  endblock  %}

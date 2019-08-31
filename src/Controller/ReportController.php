@@ -24,61 +24,55 @@ class ReportController extends AbstractController
     {
 
         $form = $this->createFormBuilder()
-        ->add('users', EntityType::class, [
-            'class' => FavouriteCity::class,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('u')
-                    ->orderBy('u.name', 'ASC');
-            },
-            'choice_label' => 'name',
-        ])
-            ->add('fromDate', DateType::class,[
-                'widget' => 'single_text',
+                 ->add('city', EntityType::class, [
+                        'class' => FavouriteCity::class,
+                        'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                        },
+                        'choice_label' => 'name',
+                        'required'   => true,
+                        'attr' => ['class' => 'form-control']
+                ])
+                ->add('fromDate', DateType::class,[
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'required'   => true,
+                    'attr' => ['class' => 'js-datepicker form-control'],
+                ])
 
-                // prevents rendering it as type="date", to avoid HTML5 date pickers
-                'html5' => false,
-
-                // adds a class that can be selected in JavaScript
-                'attr' => ['class' => 'js-datepicker'],
-            ])
-
-            ->add('toDate', DateType::class,[
-                'widget' => 'single_text',
-
-                // prevents rendering it as type="date", to avoid HTML5 date pickers
-                'html5' => false,
-
-                // adds a class that can be selected in JavaScript
-                'attr' => ['class' => 'js-datepicker'],
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Create Task'])
-            ->getForm();
+                ->add('toDate', DateType::class,[
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'required'   => true,
+                    'attr' => ['class' => 'js-datepicker form-control'],
+                ])
+                ->add('save', SubmitType::class, ['label' => 'Submit'])
+                ->getForm();
 
 
 
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                // $form->getData() holds the submitted values
-                // but, the original `$task` variable has also been updated
-                $task = $form->getData();
-                $res = $report->createReport($task);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
 
-                // ... perform some action, such as saving the task to the database
-                // for example, if Task is a Doctrine entity, save it!
-                // $entityManager = $this->getDoctrine()->getManager();
-                // $entityManager->persist($task);
-                // $entityManager->flush();
+            $res = $report->createReport($task);
+                return $this->render('report/index.html.twig',[
+                    'form' => $form->createView(),
+                    'res' => $res,
+                    'from' => $task['fromDate'],
+                    'to' => $task['toDate'],
+                    'city' => $task['city'],
+                ]);
+        }
 
-                return $this->render('report/index.html.twig',[ 'form' => $form->createView(),'res' => $res]);
-            }
-
-            return $this->render('report/index.html.twig',[ 'form' => $form->createView()]);
+        return $this->render('report/index.html.twig',[ 'form' => $form->createView()]);
 
     }
 
      /**
-    * @Route("/report/graph-daily", name="report_daily")
+    * @Route("/report/daily", name="report_daily")
     */
     public function graphDay(Request $request, Report $report)
     {

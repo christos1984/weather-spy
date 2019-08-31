@@ -1,1 +1,17 @@
 {{ form(form) }}
+
+{% if data is defined %}
+{% for datas in data %}
+
+<form method="POST" action={{ url("insert_city", parameters = [], schemeRelative = false) }}>
+<input type="hidden" name="name" value="{{ datas.name}}"/>
+<input type="hidden" name="id" value="{{ datas.id}}"/>
+{{ datas.name}}
+<input type="hidden" name="country" value="{{ datas.country}}"/>
+{{ datas.country}}
+<input type="hidden" name="coord" value="{{ datas.coord}}"/>
+{{ datas.coord}}
+<input type="submit" name="save" value="{{ datas.name}}"/>
+</form>
+{% endfor %}
+{% endif %}

@@ -2,18 +2,20 @@
 // src/Service/MessageGenerator.php
 namespace App\Service;
 
+use App\Entity\AvailableCities;
+use Doctrine\ORM\EntityManagerInterface;
+
 class FavouriteCitiesManager
 {
-    public function getHappyMessage()
+    public function __construct(EntityManagerInterface $em)
     {
-        $messages = [
-            'You did it! You updated the system! Amazing!',
-            'That was one of the coolest updates I\'ve seen all day!',
-            'Great work! Keep going!',
-        ];
+        $this->em = $em;
+    }
 
-        $index = array_rand($messages);
 
-        return $messages[$index];
+    public function getCityData(String $city): Array
+    {
+        $data = $this->em->getRepository(AvailableCities::class)->findByExampleField($city);
+        return $data;
     }
 }

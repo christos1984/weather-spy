@@ -16,11 +16,10 @@ class Report
     {
         $fromDate = $input['fromDate'];
         $toDate = $input['toDate'];
-        $city = $input['users'];
+        $city = $input['city'];
 
         $res = $this->em->getRepository(WeatherData::class)
-                ->getWeatherData($city->getId(),$fromDate->format('Y-m-d H:i:s'),$toDate->format('Y-m-d H:i:s'));
-
+                ->getWeatherData($city->getId(),$fromDate->format('Y-m-d H:i:s'),$toDate->format('Y-m-d 23:59:59'));
         return $res;
     }
 
@@ -30,7 +29,7 @@ class Report
         $city = $input['city'];
 
         $res = $this->em->getRepository(WeatherData::class)
-        ->getDailyData($city->getId(),$date->format('Y-m-d'));
+                 ->getDailyData($city->getId(),$date->format('Y-m-d'));
 
         return $res;
     }

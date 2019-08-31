@@ -1,0 +1,9 @@
+<footer class="footer">
+      <div class="container">
+        <span class="text-muted">
+        {% if lastUpdate is defined %}
+        Data last updated: {{ lastUpdate| date('Y-m-d H:i:s') }}
+        {% endif %}
+        </span>
+      </div>
+</footer>
