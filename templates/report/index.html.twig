@@ -15,61 +15,56 @@
 	and the range of dates and submit to view the results </p>
 </div>
     <div class="card bg-light">
-
-	<form class="card-body form-horizontal" action="" method="POST" id="bootstrapForm">
-		<div class="form-group row">
-		<div class="col-md-4">
-			{{ form_row(form.city)}}
-		</div>
-		<div class="col-md-4">
-			{{ form_row(form.fromDate)}}
+		<form class="card-body form-horizontal" action="" method="POST" id="bootstrapForm">
+			<div class="form-group row">
+				<div class="col-md-4">
+					{{ form_row(form.city)}}
+				</div>
+				<div class="col-md-4">
+					{{ form_row(form.fromDate)}}
+				</div>
+				<div class="col-md-4">
+					{{ form_row(form.toDate)}}
+				</div>
 			</div>
-			<div class="col-md-4">
-			{{ form_row(form.toDate)}}
+			{{ form_end(form) }}
 		</div>
-</div>
-{{ form_end(form) }}
-</div>
-</div>
+	</div>
 </div>
 
 {% if res is defined %}
 <div class="row">
-<div class="col-md-12">
-<h4> Showing results for: {{from|date('Y-m-d')}} to {{to|date('Y-m-d')}}</h4>
-<div class="table-responsive">
-	<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-	  <thead>
-		<tr>
-		  <th>Date</th>
-		  <th>Weather</th>
-		  <th>Description</th>
-		  <th>Icon</th>
-		  <th>Temperature</th>
-		  <th>Humidity</th>
-		  <th>Windspeed</th>
-		</tr>
-	  </thead>
-	  <tbody>
-{% for resa in res %}
-
-	<tr>
-		<td>{{ resa.timeUpdated | date ("Y-m-d H:i:s") }}</td>
-		<td>{{ resa.mainweather }}</td>
-		<td>{{ resa.weatherDescription }}</td>
-		<td>	<img src='http://openweathermap.org/img/wn/{{resa.icon}}.png'/></td>
-		<td>{{ resa.temperature }}</td>
-		<td>{{ resa.humidity }}</td>
-		<td>{{ resa.windspeed }}</td>
-
-	</tr>
-
-
-{% endfor %}
-</tbody>
-</table>
+	<div class="col-md-12">
+		<h4> Showing results for: {{from|date('Y-m-d')}} to {{to|date('Y-m-d')}}</h4>
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	  			<thead>
+					<tr>
+		  				<th>Date</th>
+		  				<th>Weather</th>
+		  				<th>Description</th>
+		  				<th>Icon</th>
+		  				<th>Temperature</th>
+						<th>Humidity</th>
+						<th>Windspeed</th>
+					</tr>
+	  			</thead>
+	  			<tbody>
+				{% for resa in res %}
+				<tr>
+					<td>{{ resa.timeUpdated | date ("Y-m-d H:i:s") }}</td>
+					<td>{{ resa.mainweather }}</td>
+					<td>{{ resa.weatherDescription }}</td>
+					<td><img src='http://openweathermap.org/img/wn/{{resa.icon}}.png'/></td>
+					<td>{{ resa.temperature }}</td>
+					<td>{{ resa.humidity }}</td>
+					<td>{{ resa.windspeed }}</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
 {% endif  %}
-
 </div>
 {%  endblock  %}
 

@@ -6,21 +6,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\FavouriteCity;
-use App\Entity\AvailableCities;
 use App\Service\FavouriteCitiesManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
 {
 
     /**
-    * @Route("/admin2", name="admin_homepage")
+    * @Route("/admin", name="favourite_city_index")
     */
     public function index()
     {
@@ -32,43 +28,40 @@ class AdminController extends AbstractController
     }
 
     /**
-    * @Route("/admin2/add", name="add_page")
+    * @Route("/admin/add", name="add_page")
     */
     public function addCity(Request $request, FavouriteCitiesManager $manager)
     {
-        // creates a task object and initializes some data for this example
-        $task = new FavouriteCity();
-
-
         $form = $this->createFormBuilder()
-            ->add('name', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Task'])
+            ->add('name', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Search for city'])
             ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-            $data = $manager->getCityData($task['name']);
+            $city = $form->getData();
+            $data = $manager->getCityData($city['name']);
 
-            return $this->render('task/new.html.twig', [
+            return $this->render('admin/new.html.twig', [
                 'form' => $form->createView(),
                 'data' => $data,
             ]);
         }
 
-        return $this->render('task/new.html.twig', [
+        return $this->render('admin/new.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 
-
     /**
-    * @Route("/admin2/insert", name="insert_city")
+    * @Route("/admin/insert", name="insert_city")
     */
     public function insertCity(Request $request,  EntityManagerInterface $em)
     {
-        $request = Request::createFromGlobals();
+
+        //$request = Request::createFromGlobals();
 
         $owmid = $request->request->get("id");
         $name = $request->request->get("name");
@@ -84,6 +77,20 @@ class AdminController extends AbstractController
             $em->persist($city);
             $em->flush();
         }
+        return $this->redirectToRoute('favourite_city_index');
+    }
 
+    /**
+     * @Route("/admin/delete/{id}", name="favourite_city_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, FavouriteCity $favouriteCity): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$favouriteCity->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($favouriteCity);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('favourite_city_index');
     }
 }

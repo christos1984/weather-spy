@@ -5,5 +5,10 @@
         Data last updated: {{ lastUpdate| date('Y-m-d H:i:s') }}
         {% endif %}
         </span>
+        <span class="text-muted">
+        {% if nextUpdate is defined %}
+        Next Update: {{ nextUpdate| date('Y-m-d H:i:s') }}
+        {% endif %}
+        </span>
       </div>
 </footer>

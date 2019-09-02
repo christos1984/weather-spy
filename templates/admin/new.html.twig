@@ -1,0 +1,58 @@
+{% extends "admin-base.html.twig" %}
+
+{%  block body %}
+
+{% include('topbar.html.twig')%}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Add new city</h6>
+        </div>
+        <div class="card-body">
+          {{ form(form) }}
+        </div>
+        {% if data is defined %}
+          {% if data is not empty %}
+            <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Country Code</th>
+                  <th>Coordinates</th>
+                  <th>Add</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for datas in data %}
+                <tr>
+                  <td>{{ datas.name}}</td>
+                  <td>{{ datas.country}}</td>
+                  <td>{{ datas.coord}}</td>
+                  <td>
+                    <form method="POST" action={{ url("insert_city", parameters = [], schemeRelative = false) }}>
+                      <input type="hidden" name="coord" value="{{ datas.coord}}"/>
+                      <input type="hidden" name="name" value="{{ datas.name}}"/>
+                      <input type="hidden" name="id" value="{{ datas.id}}"/>
+                      <input type="hidden" name="country" value="{{ datas.country}}"/>
+                      <input type="submit" name="save" value="Add City "/>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            {% else %}
+              <p> City not found </p>
+            {% endif %}
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{%  endblock  %}

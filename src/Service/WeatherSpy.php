@@ -9,55 +9,36 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class WeatherSpy
 {
-    public function __construct(EntityManagerInterface $em)
-    {
-        //$this->weatherData = $weatherData;
-        /**
-         * @Entity
-         */
-        $this->em = $em;
-    }
 
-    public function fetchDataFromUpstream(Array $cities): Array
+    public function fetchDataFromUpstream($city): ?Array
     {
-        if (empty($cities)){
-            echo 'WARNING: No cities found';
-        }
+            if (($city->getOwmId() == null)) return null;
 
-        foreach ($cities as $city)
-        {
             $apiKey = $_SERVER['API_KEY'];
             $googleApiUrl = "http://api.openweathermap.org/data/2.5/weather?id=" . $city->getOwmId() . "&lang=en&units=metric&APPID=" . $apiKey;
 
             $client = HttpClient::create();
             $response = $client->request('GET', $googleApiUrl);
-
-            $statusCode = $response->getStatusCode();
-            // $statusCode = 200
             $content = $response->getContent();
-            // $content = '{"id":521583, "name":"symfony-docs", ...}'
             $content = $response->toArray();
 
+            if ($response->getStatusCode() == '200'){
+                $results =[
+                    'id' => $city,
+                    'main_weather' => $content['weather']['0']['main'],
+                    'weather_description' => $content['weather']['0']['description'],
+                    'temperature' => $content['main']['temp'],
+                    'humidity' => $content['main']['humidity'],
+                    'windspeed' => $content['wind']['speed'],
+                    'icon' => $content['weather']['0']['icon'],
+                ];
 
-
-            $results =[
-                'id' => $city,
-                'main_weather' => $content['weather']['0']['main'],
-                'weather_description' => $content['weather']['0']['description'],
-                'temperature' => $content['main']['temp'],
-                'humidity' => $content['main']['humidity'],
-                'windspeed' => $content['wind']['speed'],
-                'icon' => $content['weather']['0']['icon'],
-            ];
-            $this->saveData($results);
+                return $results;
         }
-
-
-
-        return [];
+        return null;
     }
 
-    public function saveData(Array $results)
+    public function saveData(Array $results, EntityManagerInterface $em)
     {
         $wd = new WeatherData();
         $wd->setCity($results['id']);
@@ -68,7 +49,7 @@ class WeatherSpy
         $wd->setTimeUpdated(new \DateTime());
         $wd->setWindspeed($results['windspeed']);
         $wd->setIcon($results['icon']);
-        $this->em->persist($wd);
-        $this->em->flush();
+        $em->persist($wd);
+        $em->flush();
     }
 }

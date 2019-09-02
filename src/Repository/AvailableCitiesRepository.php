@@ -25,8 +25,8 @@ class AvailableCitiesRepository extends ServiceEntityRepository
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.name = :val')
-            ->setParameter('val', $value)
+            ->andWhere('LOWER(a.name) = :val')
+            ->setParameter('val', strtolower($value))
             ->orderBy('a.id', 'ASC')
             ->getQuery()
             ->getResult()
